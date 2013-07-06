@@ -38,12 +38,12 @@ app.use(express.session({
 
 app.use(require('connect-flash')());
 // Expose the flash function to the view layer
-// app.use(function(req, res, next) {
-// 	res.locals.flash = function() { 
-// 		return req.flash() 
-// 	};
-// 	next();
-// })
+app.use(function(req, res, next) {
+	res.locals.flash = function() { 
+		return req.flash() 
+	};
+	next();
+})
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
