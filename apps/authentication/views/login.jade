@@ -1,0 +1,11 @@
+extend ../../../views/layout
+
+block content
+  form(action='/sessions', method='post')
+    label
+      | Username
+      input(type='text', name='user')
+    label
+      | password
+      input(type='text', name='password')
+    input(type='submit', name='submit')

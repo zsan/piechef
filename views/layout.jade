@@ -1,7 +1,24 @@
 doctype 5
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    title= "Hot Pie - " + title 
+    link(rel='stylesheet', href='/stylesheets/#{stylesheet}.css')
   body
+    #header
+      h1= title
+
+    p= typeof flash
+    "abcd"
+    p= typeof flash("error")
+    "cde"
+    p= typeof flash("note")
+    "fgh"
+    p= flash("note")
+    "jkl"
+    p= flash("error")
+    each flashType in flash("error")
+      p.flash(class="error")
+        = flashType  
+
     block content
+        
