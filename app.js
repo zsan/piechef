@@ -4,11 +4,12 @@
  */
 require('coffee-script');
 
-//var flash = require('connect-flash');
-var express = require('express')
-  , RedisStore = require('connect-redis')(express)
-  , http = require('http')
-  , path = require('path');
+
+
+var express = require('express');
+var RedisStore = require('connect-redis')(express);
+var http = require('http');
+var path = require('path');
 
 var app = express();
 
@@ -20,30 +21,26 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser());
+app.use(express.cookieParser("keyboard cat"));
 app.use(express.session({
-	//store: new RedisStore,
-	key: 'sid',
-//	cookie: {maxAge: 60000},
-	secret: "asssssssssssssssasasasaaaaaaaaljksfhahfsa",
-}));
-// 	secret: "asssssssssssssssasasasaaaaaaaaljksfhahfsa",
-// 	store: new RedisStore
-// }));
-// app.use(function(req, res, next) {
-// res.locals.flash = function() { return req.flash() };
-// next();
-// });
-//app.use(flash());
+	store: new RedisStore,
+	secret: "aaaaaaaaaaaa",
+	cookie: { maxAge: 60000}
 
-app.use(require('connect-flash')());
-// Expose the flash function to the view layer
-app.use(function(req, res, next) {
-	res.locals.flash = function() { 
-		return req.flash() 
-	};
-	next();
-})
+}));
+
+
+app.use(function(req, res, next){
+  var err = req.session.error
+    , msg = req.session.success;
+  delete req.session.error;
+  delete req.session.success;
+  res.locals.message = '';
+  if (err) res.locals.message = {error: err }
+  if (msg) res.locals.message = {note: msg }
+  next();
+});
+
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -62,7 +59,7 @@ app.configure('test', function() {
 });
 
 // Helpers
-require('./apps/helpers')(app);
+//require('./apps/helpers')(app);
 
 // Routes
 require ('./apps/authentication/routes')(app)

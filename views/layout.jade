@@ -7,9 +7,15 @@ html
     #header
       h1= title
 
-    each flashType in flash("error")
+
+    
+    if message["error"]
       p.flash(class="error")
-        = flashType  
+        = message["error"]
+
+    if message["note"]
+      p.flash(class="info")
+        = message["note"]
 
     block content
         
