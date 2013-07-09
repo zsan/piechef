@@ -1,15 +1,16 @@
 helpers = (app) ->
   
-#  app.dynamicHelpers
-#    flash: (req, res) -> req.flash
+  app.locals
+    urlFor: (obj)->
+      if obj.id
+        "/admin/pies/#{obj.id}"
+      else
+        "/admin/pies"
 
-  # app.locals (req,res) ->
-  # 	res.locals.flash = req.flash()
+    cssClassForState: (expected, actual) ->
+      if actual is expected
+        [expected, 'on']
+      else
+        expected
 
-# app.use(function(req, res, next) {
-# 	res.locals.flash = function() { 
-# 		return req.flash() 
-# 	};
-# 	next();
-# })
 module.exports = helpers

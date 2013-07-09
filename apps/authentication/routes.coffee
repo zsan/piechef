@@ -9,7 +9,7 @@ routes = (app) ->
     if ('piechef' is req.body.user) and ('12345' is req.body.password)
       req.session.currentUser = req.body.user
       req.session.success = "You are logged in as #{req.session.currentUser}"
-      res.redirect '/login'
+      res.redirect '/admin/pies'
       return
     req.session.error = 'Those credential were incorrect. Try again.'
     res.redirect '/login'

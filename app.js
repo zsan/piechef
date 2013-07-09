@@ -4,10 +4,10 @@
  */
 require('coffee-script');
 
+var express = require('express')
+    , RedisStore = require('connect-redis')(express);
 
-
-var express = require('express');
-var RedisStore = require('connect-redis')(express);
+require('express-namespace');
 var http = require('http');
 var path = require('path');
 
@@ -22,13 +22,14 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser("keyboard cat"));
+
 app.use(express.session({
 	store: new RedisStore,
 	secret: "aaaaaaaaaaaa",
 	cookie: { maxAge: 60000}
-
 }));
 
+app.use(require('connect-assets')());
 
 app.use(function(req, res, next){
   var err = req.session.error
@@ -59,10 +60,11 @@ app.configure('test', function() {
 });
 
 // Helpers
-//require('./apps/helpers')(app);
+require('./apps/helpers')(app);
 
 // Routes
 require ('./apps/authentication/routes')(app)
+require ('./apps/admin/routes')(app)
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
