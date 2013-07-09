@@ -11,7 +11,7 @@ jQuery ->
     socket.on "pie:changed", (pie) ->
       refresh()
 
-    #setTimeout refresh, 1000*60
+    setTimeout refresh, 1000*60
 
     # DEBUG
     window.socket = socket
