@@ -4,7 +4,7 @@ class Pie
   @key: ->
     "Pie:#{process.env.NODE_ENV}"
 
-  @states: ['inactive','making','ready']
+  @states : ['inactive','making','ready']
   
   @all: (callback)->
     redis.hgetall Pie.key(), (err, objects) ->
@@ -13,6 +13,11 @@ class Pie
         pie = new Pie JSON.parse(json)
         pies.push pie
       callback null, pies
+
+  @active: (callback) ->
+    Pie.all (err, pies) ->
+      activePies = (pie for pie in pies when pie.state isnt 'inactive')
+      callback null, activePies
 
   @getById: (id, callback) ->
     redis.hget Pie.key(), id, (err,json) ->

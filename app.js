@@ -8,12 +8,12 @@ var express = require('express')
     , RedisStore = require('connect-redis')(express);
 
 require('express-namespace');
-var http = require('http');
-var path = require('path');
 
-var app = express();
+var http   = require('http');
+var path   = require('path');
+var app    = module.exports = express();             
+var server = http.createServer(app);
 
-// all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -65,7 +65,10 @@ require('./apps/helpers')(app);
 // Routes
 require ('./apps/authentication/routes')(app)
 require ('./apps/admin/routes')(app)
+require ('./apps/sidewalk/routes')(app)
 
-http.createServer(app).listen(app.get('port'), function(){
+server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+require('./apps/socket-io')(app, server);

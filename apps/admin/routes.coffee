@@ -3,14 +3,14 @@ Pie = require '../../models/pie'
 routes = (app) ->
   app.namespace '/admin', ->
 
-    # Authentication check
-    # app.all = get, put, delete and all
+    #Authentication check
+    #app.all = get, put, delete and all
     app.all '/*', (req,res,next) ->
       if not (req.session.currentUser)
         req.session.error = "Please login"
         res.redirect '/login'
         return
-      # so if authenticated then next
+      #so if authenticated then next
       next()
 
     app.namespace '/pies', ->
@@ -37,6 +37,8 @@ routes = (app) ->
         Pie.getById req.params.id, (err, pie) ->
           if req.body.state in Pie.states
             pie[req.body.state] -> 
+              if socketIO = app.settings.socketIO
+                socketIO.sockets.emit "pie:changed", pie
               res.send "OK"
 
     app.namespace '/menu', ->
