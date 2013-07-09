@@ -1,0 +1,7 @@
+extend ../../../views/layout
+
+block content
+  ul
+    each pie in pies
+      li(class=[cssClassForPieAge(pie),pie.type])
+        = pie.name

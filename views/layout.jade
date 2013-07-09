@@ -1,7 +1,23 @@
 doctype 5
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    title= "Hot Pie - " + title 
+    link(rel='stylesheet', href='/stylesheets/#{stylesheet}.css')
   body
+    #header
+      h1= title
+
+
+    
+    if message["error"]
+      p.flash(class="error")
+        = message["error"]
+
+    if message["note"]
+      p.flash(class="info")
+        = message["note"]
+
     block content
+    
+    script(src='/socket.io/socket.io.js')
+    != js('application')    
